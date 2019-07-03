@@ -60,8 +60,6 @@ public class Point3D extends Point2D{
     /************** Operations ***************/
     public vector substract(Point3D other)  {
             vector result=new vector(new Point3D(this.x.subtract(other.x),this.y.subtract(other.y),this.z.subtract(other.z)));
-            if(Util.isZero(result.length()))
-                throw new IllegalArgumentException("zero vector!!");
             return result;
     }
     public Point3D add(vector vector)

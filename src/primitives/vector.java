@@ -19,8 +19,6 @@ public class vector {
 
     public vector(Point3D p1,Point3D p2) //vector from p1 to p2
     {
-            if(p1.equals(p2))
-                throw new IllegalArgumentException("p1==p2");
             this.head = p2.substract(p1).head;
     }
     public vector(vector other) {
@@ -68,8 +66,6 @@ public class vector {
     }//projection this on other
     public vector add(vector other) {
         this.head= new vector(head.add(other)).head;
-        if(this.length()==0)
-            throw new IllegalArgumentException("zero vector!!!");
         return this;
     }//change the original
     public vector substract(vector other){
@@ -84,8 +80,6 @@ public class vector {
         return this.add(minousVector);
     }//change the original
     public vector multiply(double scale){
-        if(scale==0)
-            throw new IllegalArgumentException("zero vector!!!");
         vector v=new vector(new Point3D(this.head.getx().scale(scale),this.head.gety().scale(scale),this.head.getz().scale(scale)));
         this.sethead(v.head);
         return this;
@@ -119,7 +113,7 @@ public class vector {
     public vector normalize()  {
         double length=this.length();
         if ( length==0)
-            throw new ArithmeticException();
+            return new vector();
         Point3D newHead=new Point3D(new Coordinate(this.head.getx().get()/this.length()),new Coordinate(this.head.gety().get()/this.length()),new Coordinate(this.head.getz().get()/this.length()));
         this.sethead(newHead);
         if(this.length()==0)

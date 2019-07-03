@@ -52,9 +52,11 @@ public class Triangle extends Plane{
         Point3D p0=ray.getP00();
         vector n =getNormal(null);
         Plane plane=new Plane(p1,p2,p3);
-        if (plane.findIntersections(ray).isEmpty())
+        List<Point3D> Intersections=plane.findIntersections(ray);
+        System.out.println(Intersections);
+        if (Intersections.isEmpty()||Intersections.size()==0)
             return EMPTY_LIST;
-        Point3D intersectionPlane = plane.findIntersections(ray).get(0);
+        Point3D intersectionPlane = Intersections.get(0);
         vector p_p0=new vector(p0,intersectionPlane);
         vector V1_1 = new vector(p0, this.p1);
         vector V2_1 = new vector(p0, this.p2);
