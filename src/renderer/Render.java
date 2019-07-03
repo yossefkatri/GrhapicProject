@@ -78,8 +78,16 @@ public class Render {
         return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight));//,refractedLight,reflectedLight));
     }
 
+
     private Ray constructRefractedRay(vector normal, Point3D point, Ray inRay) {
-        
+        vector v= inRay.getDirection().normalize();
+        vector no=new vector(normal).normalize();
+        no.multiply(-2);
+        Point3D p=new Point3D(point);
+        p=p.add(no);
+
+        Ray r=new Ray(p,v);
+        return r;
     }
 
     private Map.Entry<Geometry, Point3D> findClosesntIntersection(Ray ray) {
