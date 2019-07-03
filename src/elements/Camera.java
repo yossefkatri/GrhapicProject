@@ -39,7 +39,7 @@ public class Camera {
     public Camera(){
         this.P0=new Point3D(0,0,0);
         this.vTo=new vector(0,0,-1);
-        this.vUp=new vector(0,1,0);
+        this.vUp=new vector(1,0,0);
         vRight = (vUp.crossproduct(vTo)).normalize();
     }
     /************** Operations ***************/

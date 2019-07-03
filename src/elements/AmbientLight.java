@@ -23,6 +23,6 @@ public class AmbientLight extends Light
     /************** Operations ***************/
     public Color getIntensity()
     {
-        return color.scale(Ka);
+        return scaleColor(color,Ka);
     }
 }

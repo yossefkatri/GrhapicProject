@@ -43,7 +43,7 @@ public class RecursiveTests {
 
         Scene scene = new Scene("recursiveTest2");
         scene.setCameraAndDistance(new Camera(),300);
-
+        scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(300, new Point3D(-550, -500, -1000));
         sphere.setMaterial(new Material(1,1,0,0.5,20));
         sphere.setEmmission(new Color(0, 0, 100));
