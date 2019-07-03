@@ -11,8 +11,8 @@ public class Material {
         Kd = kd;
         Ks = ks;
         this.nShininess=nShininess;
-        Kr=1;
-        Kt=1;
+        Kr=0;
+        Kt=0;
     }
     public Material() {
         Kd = 1.0;
