@@ -17,6 +17,7 @@ import java.util.*;
 public class Render {
     private ImageWriter imageWriter;
     private Scene scene;
+    private final int RECURSION_LEVEL = 3;
     // ***************** Constructors ********************** //
 
     public Render(ImageWriter imageWriter, Scene scene) {
@@ -24,8 +25,10 @@ public class Render {
         this.scene = new Scene(scene);
     }
     /************** Operations ***************/
-    //private Color
-    private Color calcColor(Geometry geometry,Point3D point){
+    private Color calcColor(Geometry geometry,Point3D point, Ray inRay)
+    private Color calcColor(Geometry geometry,Point3D point, Ray inRay,int level){
+        if(level==RECURSION_LEVEL) return new Color(0,0,0);
+
         Color ambientLight=scene.getAmbientLight().getIntensity();
 
         Color emissionLight=geometry.getEmmission();
@@ -37,8 +40,7 @@ public class Render {
         Iterator<LightSource> lights=scene.getLightsIterator();
         Color diffuseLight=new Color(0,0,0);
         Color specularLight=new Color(0,0,0);
-        while (lights.hasNext())
-        {
+        while (lights.hasNext()) {
             LightSource Current = lights.next();
             if(!occluded(Current,point,geometry)) {
                 diffuseLight = diffuseLight.add(calcDiffusiveComp(geometry.getMaterial().getKd(),
@@ -55,7 +57,22 @@ public class Render {
 
             }
         }
-        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight));
+
+        //Recursive call for a reflected ray
+        Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);
+        Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);
+        Color reflectedColor=calcColor(reflectedEntry.getKey(),reflectedEntry.getValue(),reflectedRay,level+1);
+        double kr=geometry.getMaterial().getKr();
+        Color reflectedLight=new Color(scaleColor(reflectedColor,kr));
+
+        //Recursive call for a refracted ray
+        Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);
+        Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);
+        Color refractedColor=calcColor(refractedEntry.getKey(),refractedEntry.getValue(),refractedRay,level+1);
+        double kt=geometry.getMaterial().getKt();
+        Color refractedLight=new Color(scaleColor(refractedColor,kt));
+
+        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight,refractedLight,reflectedLight));
     }
 
     private boolean occluded(LightSource light, Point3D point, Geometry geometry) {

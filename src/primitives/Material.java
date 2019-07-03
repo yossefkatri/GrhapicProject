@@ -52,4 +52,20 @@ public class Material {
     public void setnShininess(int nShininess) {
         this.nShininess = nShininess;
     }
+
+    public double getKr() {
+        return Kr;
+    }
+
+    public void setKr(double kr) {
+        Kr = kr;
+    }
+
+    public double getKt() {
+        return Kt;
+    }
+
+    public void setKt(double kt) {
+        Kt = kt;
+    }
 }
