@@ -53,7 +53,6 @@ public class Triangle extends Plane{
         vector n =getNormal(null);
         Plane plane=new Plane(p1,p2,p3);
         List<Point3D> Intersections=plane.findIntersections(ray);
-        System.out.println(Intersections);
         if (Intersections.isEmpty()||Intersections.size()==0)
             return EMPTY_LIST;
         Point3D intersectionPlane = Intersections.get(0);

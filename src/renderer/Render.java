@@ -114,14 +114,13 @@ public class Render {
     }
 
     private Ray constructReflectedRay(vector normal, Point3D point, Ray inRay) {
-        normal.normalize();
-        vector DirectionRay=inRay.getDirection().normalize();
+        vector n=new vector(normal.normalize()).multiply(2);
+        vector DirectionRay=new vector(inRay.getDirection().normalize());
 
-        double dotProduct=DirectionRay.dotProduct(normal);
+        double dotProduct=DirectionRay.dotProduct(n);
 
-        vector R=DirectionRay.substract(normal.multiply(dotProduct*2));
+        vector R=DirectionRay.substract(n.multiply(dotProduct*2));
         R.normalize();
-
         return new Ray(point,R);
     }
 

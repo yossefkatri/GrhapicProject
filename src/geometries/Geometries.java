@@ -26,6 +26,7 @@ public class Geometries{
             if(geometry.findIntersections(ray)!=Intersectable.EMPTY_LIST && !geometry.findIntersections(ray).isEmpty())
             Intersections.put((Geometry)geometry,geometry.findIntersections(ray));
         }
+
         return Intersections;
     }
 }
