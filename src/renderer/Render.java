@@ -75,20 +75,10 @@ public class Render {
         double kt=geometry.getMaterial().getKt();
         Color refractedLight=new Color(scaleColor(refractedColor,kt));
 
-        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight));//,refractedLight,reflectedLight));
+        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight,refractedLight,reflectedLight));
     }
 
 
-    private Ray constructRefractedRay(vector normal, Point3D point, Ray inRay) {
-        vector v= inRay.getDirection().normalize();
-        vector no=new vector(normal).normalize();
-        no.multiply(-2);
-        Point3D p=new Point3D(point);
-        p=p.add(no);
-
-        Ray r=new Ray(p,v);
-        return r;
-    }
 
     private Map.Entry<Geometry, Point3D> findClosesntIntersection(Ray ray) {
 
@@ -100,6 +90,16 @@ public class Render {
         Map<Geometry, Point3D> closestPoint = getClosestPoint(intersectionPoints);
         Map.Entry<Geometry, Point3D> entry = closestPoint.entrySet().iterator().next();
         return entry;
+    }
+    private Ray constructRefractedRay(vector normal, Point3D point, Ray inRay) {
+        vector v= inRay.getDirection().normalize();
+        vector no=new vector(normal).normalize();
+        no.multiply(-2);
+        Point3D p=new Point3D(point);
+        p=p.add(no);
+
+        Ray r=new Ray(p,v);
+        return r;
     }
 
     private Ray constructReflectedRay(vector normal, Point3D point, Ray inRay) {
@@ -130,7 +130,11 @@ public class Render {
         if(geometry instanceof FlatGeometry) {
             intersectionPoints.remove(geometry);
         }
-        return !intersectionPoints.isEmpty();
+        for (Map.Entry<Geometry,List<Point3D>> entry: intersectionPoints.entrySet()){
+            if(entry.getKey().getMaterial().getKt()==0)
+                return true;
+        }
+        return false;
     }
 
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
@@ -189,7 +193,7 @@ public class Render {
                 {
                      Map<Geometry,Point3D> closestPoint=getClosestPoint(intersectionPoints);
                     for (Map.Entry<Geometry,Point3D> point: closestPoint.entrySet()) {
-                        imageWriter.writePixel(i, j, calcColor(point.getKey(),point.getValue() ).getColor());
+                        imageWriter.writePixel(i, j, calcColor(point.getKey(),point.getValue() ,ray).getColor());
                     }
                 }
             }

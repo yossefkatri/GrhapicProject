@@ -88,7 +88,8 @@ public class vector {
     public vector multiply(double scale){
         if(scale==0)
             throw new IllegalArgumentException("zero vector!!!");
-        this.sethead(new vector(new Point3D(this.head.getx().scale(scale),this.head.gety().scale(scale),this.head.getz().scale(scale))).head);
+        vector v=new vector(new Point3D(this.head.getx().scale(scale),this.head.gety().scale(scale),this.head.getz().scale(scale)));
+        this.sethead(v.head);
         return this;
     }//change the original
     public double dotProduct(vector other) {
