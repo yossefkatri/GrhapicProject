@@ -26,6 +26,9 @@ public class Render {
     }
     /************** Operations ***************/
     private Color calcColor(Geometry geometry,Point3D point, Ray inRay)
+    {
+        return calcColor(geometry,point,inRay,0);
+    }
     private Color calcColor(Geometry geometry,Point3D point, Ray inRay,int level){
         if(level==RECURSION_LEVEL) return new Color(0,0,0);
 
@@ -72,7 +75,35 @@ public class Render {
         double kt=geometry.getMaterial().getKt();
         Color refractedLight=new Color(scaleColor(refractedColor,kt));
 
-        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight,refractedLight,reflectedLight));
+        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight));//,refractedLight,reflectedLight));
+    }
+
+    private Ray constructRefractedRay(vector normal, Point3D point, Ray inRay) {
+        
+    }
+
+    private Map.Entry<Geometry, Point3D> findClosesntIntersection(Ray ray) {
+
+        Map<Geometry, List<Point3D>> intersectionPoints = getSceneRayIntersections(ray);
+
+        if (intersectionPoints.size() == 0)
+            return null;
+
+        Map<Geometry, Point3D> closestPoint = getClosestPoint(intersectionPoints);
+        Map.Entry<Geometry, Point3D> entry = closestPoint.entrySet().iterator().next();
+        return entry;
+    }
+
+    private Ray constructReflectedRay(vector normal, Point3D point, Ray inRay) {
+        normal.normalize();
+        vector DirectionRay=inRay.getDirection().normalize();
+
+        double dotProduct=DirectionRay.dotProduct(normal);
+
+        vector R=DirectionRay.substract(normal.multiply(dotProduct*2));
+        R.normalize();
+
+        return new Ray(point,R);
     }
 
     private boolean occluded(LightSource light, Point3D point, Geometry geometry) {
