@@ -1,4 +1,5 @@
 package unittests;
+import elements.AmbientLight;
 import elements.Camera;
 import elements.spotLight;
 import geometries.Cylinder;
@@ -16,7 +17,7 @@ public class RecursiveTests {
     public void recursiveTest(){
         Scene scene = new Scene("recursiveTest");
         scene.setCameraAndDistance(new Camera(),300);
-
+        scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
         sphere.setMaterial(new Material(1, 1, 0, 0.5, 20));
         sphere.setEmmission(new Color(0, 0, 100));

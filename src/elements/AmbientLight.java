@@ -8,6 +8,10 @@ public class AmbientLight extends Light
     public AmbientLight() {
         super(new Color(java.awt.Color.white));
     }
+    public AmbientLight(double KA) {
+        super(new Color(java.awt.Color.white));
+        Ka=KA;
+    }
     public AmbientLight(Color IA)
     {
         super(IA);
