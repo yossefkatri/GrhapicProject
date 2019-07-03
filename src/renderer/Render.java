@@ -64,14 +64,25 @@ public class Render {
         //Recursive call for a reflected ray
         Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);
         Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);
-        Color reflectedColor=calcColor(reflectedEntry.getKey(),reflectedEntry.getValue(),reflectedRay,level+1);
+        Color reflectedColor;
+        if(reflectedEntry==null)
+            reflectedColor=new Color(0,0,0);
+        else
+        {
+            reflectedColor=calcColor(reflectedEntry.getKey(),reflectedEntry.getValue(),reflectedRay,level+1);
+        }
         double kr=geometry.getMaterial().getKr();
         Color reflectedLight=new Color(scaleColor(reflectedColor,kr));
 
         //Recursive call for a refracted ray
         Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);
         Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);
-        Color refractedColor=calcColor(refractedEntry.getKey(),refractedEntry.getValue(),refractedRay,level+1);
+        Color refractedColor;
+        if(refractedEntry==null)
+            refractedColor=new Color(0,0,0);
+        else{
+            refractedColor=calcColor(refractedEntry.getKey(),refractedEntry.getValue(),refractedRay,level+1);
+        }
         double kt=geometry.getMaterial().getKt();
         Color refractedLight=new Color(scaleColor(refractedColor,kt));
 

@@ -62,10 +62,12 @@ public class Sphere extends RadialGeometry {
         double t2=tm-th;
         List<Point3D> Intersections=new ArrayList<Point3D>();
         vector v=new vector(ray.getDirection());
-        if(t1>=0)
+        if(t1>0)
             Intersections.add(ray.getP00().add(v.multiply(t1)));
-        if(t2>=0)
+        if(t2>0)
             Intersections.add(ray.getP00().add(new vector(ray.getDirection()).multiply(t2)));
+        if(t1==0||t2==0)
+            Intersections.add(ray.getP00());
         return Intersections;
     }
 }

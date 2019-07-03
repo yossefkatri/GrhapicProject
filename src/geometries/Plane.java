@@ -80,8 +80,10 @@ public class Plane extends Geometry implements FlatGeometry{
     }
     vector u=new vector(P0,Q0);
     double t=(normal.dotProduct(u))/normal.dotProduct(v);
-    if(t>=0)
+    if(t>0)
         Intersections.add(ray.getP00().add(v.multiply(t)));
+    if(t==0)
+        Intersections.add(ray.getP00());
     return Intersections;
     }
 }
