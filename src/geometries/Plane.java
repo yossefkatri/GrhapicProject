@@ -8,7 +8,7 @@ import primitives.vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plane extends Geometry {
+public class Plane extends Geometry implements FlatGeometry{
     protected Point3D P;
     protected vector normal;
     /********** Constructors ***********/

@@ -2,6 +2,7 @@ package renderer;
 
 import elements.Light;
 import elements.LightSource;
+import geometries.FlatGeometry;
 import geometries.Geometries;
 import geometries.Geometry;
 import geometries.Intersectable;
@@ -23,36 +24,57 @@ public class Render {
         this.scene = new Scene(scene);
     }
     /************** Operations ***************/
-    //private Color 
+    //private Color
     private Color calcColor(Geometry geometry,Point3D point){
         Color ambientLight=scene.getAmbientLight().getIntensity();
 
         Color emissionLight=geometry.getEmmission();
 
-        //Color I0=new Color(ambientLight.getColor().getRed()+emissionLight.getColor().getRed()
-        //                    ,ambientLight.getColor().getGreen()+emissionLight.getColor().getGreen()
-        //                   ,ambientLight.getColor().getBlue()+emissionLight.getColor().getBlue());
+        Color I0=new Color(ambientLight.getColor().getRed()+emissionLight.getColor().getRed()
+                          ,ambientLight.getColor().getGreen()+emissionLight.getColor().getGreen()
+                           ,ambientLight.getColor().getBlue()+emissionLight.getColor().getBlue());
 
         Iterator<LightSource> lights=scene.getLightsIterator();
         Color diffuseLight=new Color(0,0,0);
         Color specularLight=new Color(0,0,0);
         while (lights.hasNext())
         {
-            LightSource Current=lights.next();
-             diffuseLight=diffuseLight.add(calcDiffusiveComp(geometry.getMaterial().getKd(),
-                                                    geometry.getNormal(point),
-                                                    Current.getL(point),
-                                                    Current.getInternsity(point)));
-             specularLight=specularLight.add(calcSpecularComp(geometry.getMaterial().getKs(),
-                                                    new vector(point, scene.
-                                                                getCamera().getP0()).normalize(),
-                                                                geometry.getNormal(point).normalize(),
-                                                                Current.getL(point).normalize(),
-                                                                geometry.getnShininess(),
-                                                                Current.getInternsity(point)));
+            LightSource Current = lights.next();
+            if(!occluded(Current,point,geometry)) {
+                diffuseLight = diffuseLight.add(calcDiffusiveComp(geometry.getMaterial().getKd(),
+                        geometry.getNormal(point),
+                        Current.getL(point),
+                        Current.getInternsity(point)));
+                specularLight = specularLight.add(calcSpecularComp(geometry.getMaterial().getKs(),
+                        new vector(point, scene.
+                                getCamera().getP0()).normalize(),
+                        geometry.getNormal(point).normalize(),
+                        Current.getL(point).normalize(),
+                        geometry.getnShininess(),
+                        Current.getInternsity(point)));
 
+            }
         }
         return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight));
+    }
+
+    private boolean occluded(LightSource light, Point3D point, Geometry geometry) {
+        vector lightDirection=light.getL(point).normalize();
+        lightDirection.multiply(-1);
+
+        Point3D geometryPoint=new Point3D(point);
+
+        vector epsVector = new vector(geometry.getNormal(geometryPoint));
+        epsVector.multiply((epsVector.dotProduct(lightDirection) > 0) ? 2 : -2);
+        geometryPoint = point.add(epsVector);
+
+        Ray lightRay =new Ray(geometryPoint,lightDirection);
+        Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(lightRay);
+
+        if(geometry instanceof FlatGeometry) {
+            intersectionPoints.remove(geometry);
+        }
+        return !intersectionPoints.isEmpty();
     }
 
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {

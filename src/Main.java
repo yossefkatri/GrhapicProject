@@ -78,5 +78,10 @@ public class Main {
         {
             System.out.println(ex.getMessage());
         }
+        Point3D p3 = new Point3D();
+        Point3D p4 = new Point3D(1,2,3);
+        Point3D p5 = new Point3D(new Coordinate(5.8), new Coordinate(8.8), new Coordinate(5.6));
+        Triangle tr1 = new Triangle(p3, p4, p5);
+        System.out.println(tr1 instanceof FlatGeometry);
     }
 }
