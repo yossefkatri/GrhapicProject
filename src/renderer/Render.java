@@ -14,6 +14,9 @@ import scene.Scene;
 
 import java.util.*;
 
+import static java.lang.Math.pow;
+import static java.lang.StrictMath.max;
+
 public class Render {
     private ImageWriter imageWriter;
     private Scene scene;
@@ -114,14 +117,20 @@ public class Render {
     }
 
     private Ray constructReflectedRay(vector normal, Point3D point, Ray inRay) {
-        vector n=new vector(normal.normalize()).multiply(2);
+        vector n=new vector(normal);
         vector DirectionRay=new vector(inRay.getDirection().normalize());
 
         double dotProduct=DirectionRay.dotProduct(n);
 
         vector R=DirectionRay.substract(n.multiply(dotProduct*2));
         R.normalize();
-        return new Ray(point,R);
+
+        vector v = new vector(normal);
+        v.multiply(2);
+        Point3D p=new Point3D(point);
+        p.add(v);
+
+        return new Ray(p,R);
     }
 
     private boolean occluded(LightSource light, Point3D point, Geometry geometry) {
@@ -149,22 +158,20 @@ public class Render {
 
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
         minusVector.normalize();
-        normal.normalize();
+        vector n=new vector(normal.normalize());
         l.normalize();
-        vector R=new vector(l).substract(new vector(normal).multiply(2*normal.dotProduct(l))).normalize();
+        vector R=new vector(l).substract(new vector(normal).multiply(2*normal.dotProduct(l)));
         double dot=minusVector.dotProduct(R);
-        if(nShininess==0)
-            dot=1;
-        for(int i=1;i<nShininess;i++) {
-            dot*=dot;
-        }//pow by nShininess
-        Color Spec=new Color(scaleColor( internsity,ks*dot));
+
+        double k=max(0,ks*pow(dot,nShininess));
+        Color Spec=new Color(scaleColor( internsity,k));
 
         return Spec;
     }
 
     private Color calcDiffusiveComp(double kd, vector normal, vector l, Color internsity) {
      double dotProduct=normal.dotProduct(l);
+
      Color Diff=new Color(scaleColor(internsity,kd*dotProduct));
      return Diff;
     }
