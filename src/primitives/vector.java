@@ -8,8 +8,6 @@ public class vector {
     public static vector ZERO=new vector();
     /********** Constructors ***********/
     public vector(Point3D head) {
-        if(head.equals(new Point3D()))
-            throw new IllegalArgumentException("not explicit Point(0,0,0) allowed");
         this.head = head;
     }
     public vector(double x, double y, double z) {
