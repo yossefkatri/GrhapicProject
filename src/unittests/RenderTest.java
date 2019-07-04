@@ -179,7 +179,7 @@ public class RenderTest {
 		scene.setCameraAndDistance(new Camera(), 200);
 
 		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
-		sphere.setMaterial(new Material(1, 1, 1, 1, 20));
+		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
 		sphere.setEmmission(new Color(0, 0, 100));
 		scene.addGeometry(sphere);
 

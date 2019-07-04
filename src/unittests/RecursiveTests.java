@@ -70,9 +70,9 @@ public class RecursiveTests {
         scene.addGeometry(triangle2);
 
         scene.addLight(new spotLight(new Color(255, 100, 100),  new Point3D(200, 200, -150),new vector(-2, -2, -3),
-                1, 2, 2));
+                0, 0.00001, 0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("Recursive Test 6", 500, 500, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Recursive Test 6 IS", 500, 500, 500, 500);
 
         Render render = new Render(imageWriter, scene);
 

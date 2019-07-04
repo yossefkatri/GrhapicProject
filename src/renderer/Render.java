@@ -86,6 +86,61 @@ public class Render {
 
         return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight,refractedLight,reflectedLight));
     }
+    private Color ImprovingOccludedcalcColor(Geometry geometry,Point3D point, Ray inRay,int level){
+        if(level==RECURSION_LEVEL) return new Color(0,0,0);
+
+        Color ambientLight=scene.getAmbientLight().getIntensity();
+
+        Color emissionLight=geometry.getEmmission();
+
+        Color I0=new Color(ambientLight.getColor().getRed()+emissionLight.getColor().getRed()
+                ,ambientLight.getColor().getGreen()+emissionLight.getColor().getGreen()
+                ,ambientLight.getColor().getBlue()+emissionLight.getColor().getBlue());
+
+        Iterator<LightSource> lights=scene.getLightsIterator();
+        Color diffuseLight=new Color(0,0,0);
+        Color specularLight=new Color(0,0,0);
+        double Kd=geometry.getMaterial().getKd();
+        double Ks=geometry.getMaterial().getKs();
+        vector n=geometry.getNormal(point).normalize();
+        vector MV=new vector(point, scene.
+                getCamera().getP0()).normalize();
+        while (lights.hasNext()) {
+            LightSource Current = lights.next();
+            vector l=Current.getL(point).normalize();
+            Color c=Current.getInternsity(point).scale(ImprovingOccluded(Current,point,geometry));
+            int nShininess=geometry.getnShininess();
+                diffuseLight = diffuseLight.add(calcDiffusiveComp(Kd, n, l,c));
+                specularLight = specularLight.add(calcSpecularComp(Ks, MV,n,l,nShininess,c));
+        }
+
+        //Recursive call for a reflected ray
+        Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);
+        Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);
+        Color reflectedColor;
+        if(reflectedEntry==null)
+            reflectedColor=new Color(0,0,0);
+        else
+        {
+            reflectedColor=calcColor(reflectedEntry.getKey(),reflectedEntry.getValue(),reflectedRay,level+1);
+        }
+        double kr=geometry.getMaterial().getKr();
+        Color reflectedLight=new Color(scaleColor(reflectedColor,kr));
+
+        //Recursive call for a refracted ray
+        Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);
+        Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);
+        Color refractedColor;
+        if(refractedEntry==null)
+            refractedColor=new Color(0,0,0);
+        else{
+            refractedColor=calcColor(refractedEntry.getKey(),refractedEntry.getValue(),refractedRay,level+1);
+        }
+        double kt=geometry.getMaterial().getKt();
+        Color refractedLight=new Color(scaleColor(refractedColor,kt));
+
+        return new Color(ambientLight.add(emissionLight,diffuseLight,specularLight,refractedLight,reflectedLight));
+    }
 
 
 
@@ -134,11 +189,13 @@ public class Render {
 
         Point3D geometryPoint=new Point3D(point);
 
-        vector epsVector = new vector(geometry.getNormal(geometryPoint));
+        vector epsVector = new vector(geometry.getNormal(geometryPoint)).normalize();
         epsVector.multiply((epsVector.dotProduct(lightDirection) > 0) ? 2 : -2);
+
         geometryPoint = point.add(epsVector);
 
         Ray lightRay =new Ray(geometryPoint,lightDirection);
+
         Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(lightRay);
 
         if(geometry instanceof FlatGeometry) {
@@ -150,6 +207,56 @@ public class Render {
         }
         return false;
     }
+    /*private double ImprovingSoftShadows(LightSource light, Point3D point, Geometry geometry)
+    {
+        vector lightDirection=light.getL(point).normalize();
+        lightDirection.multiply(-1);
+
+        Point3D geometryPoint=new Point3D(point);
+
+        vector epsVector = new vector(geometry.getNormal(geometryPoint)).normalize();
+        epsVector.multiply((epsVector.dotProduct(lightDirection) > 0) ? 2 : -2);
+
+        geometryPoint = point.add(epsVector);
+
+        Ray lightRay =new Ray(geometryPoint,lightDirection);
+
+        Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(lightRay);
+
+        if(geometry instanceof FlatGeometry) {
+            intersectionPoints.remove(geometry);
+        }
+        for (Map.Entry<Geometry,List<Point3D>> entry: intersectionPoints.entrySet()){
+            if(entry.getKey().getMaterial().getKt()==0)
+                return true;
+        }
+        return false;
+    }*/
+    private double ImprovingOccluded(LightSource light, Point3D point, Geometry geometry) {
+        vector lightDirection=light.getL(point).normalize();
+        lightDirection.multiply(-1);
+
+        Point3D geometryPoint=new Point3D(point);
+
+        vector epsVector = new vector(geometry.getNormal(geometryPoint));
+        epsVector.multiply((epsVector.dotProduct(lightDirection) > 0) ? 2 : -2);
+
+        geometryPoint = point.add(epsVector);
+
+        Ray lightRay =new Ray(geometryPoint,lightDirection);
+
+        Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(lightRay);
+
+        if(geometry instanceof FlatGeometry) {
+            intersectionPoints.remove(geometry);
+        }
+        double shadowK=1.0;
+        for (Map.Entry<Geometry,List<Point3D>> entry: intersectionPoints.entrySet()){
+            shadowK*=entry.getKey().getMaterial().getKt();
+        }
+        return shadowK;
+    }
+
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
         minusVector.normalize();
         vector n=new vector(normal.normalize());
@@ -212,7 +319,7 @@ public class Render {
         for(int i=0;i<imageWriter.getWidth();i++)
             for(int j=0;j<imageWriter.getHeight();j++)
             {
-                List<Ray> rays=scene.getCamera().constructRaysThroughPixel(imageWriter.getNx(),imageWriter.getNy(),i,j,scene.getScreenDistance(),imageWriter.getWidth(),imageWriter.getWidth());
+                List<Ray> rays=scene.getCamera().constructRaysThroughPixel(imageWriter.getNx(),imageWriter.getNy(),i,j,scene.getScreenDistance(),imageWriter.getWidth(),imageWriter.getHeight());
                 List<Color> colorsRays=new ArrayList<Color>();
                 for (Ray ray: rays)
                 {
