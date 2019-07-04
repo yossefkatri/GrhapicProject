@@ -30,7 +30,7 @@ public class RecursiveTests {
 
         scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(-200, -200, -150), new vector(2, 2, -3), 0.1, 0.00001, 0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("Recursive Test 1", 500, 500, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Recursive Test 5", 500, 500, 500, 500);
 
         Render render = new Render(imageWriter, scene);
 
@@ -45,12 +45,12 @@ public class RecursiveTests {
         scene.setCameraAndDistance(new Camera(),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(300, new Point3D(-550, -500, -1000));
-        sphere.setMaterial(new Material(1,1,0,0.5,20));
+        sphere.setMaterial(new Material(1,1,0,0.5,200));
         sphere.setEmmission(new Color(0, 0, 100));
         scene.addGeometry(sphere);
 
         Sphere sphere2 = new Sphere(150, new Point3D(-550, -500, -1000));
-        sphere2.setMaterial(new Material(1,1,0,0,20));
+        sphere2.setMaterial(new Material(1,1,0,0,200));
         sphere2.setEmmission(new Color(100, 20, 20));
         scene.addGeometry(sphere2);
 
@@ -72,11 +72,12 @@ public class RecursiveTests {
         scene.addLight(new spotLight(new Color(255, 100, 100),  new Point3D(200, 200, -150),new vector(-2, -2, -3),
                 0, 0.00001, 0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("Recursive Test 2", 500, 500, 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Recursive Test 6", 500, 500, 500, 500);
 
         Render render = new Render(imageWriter, scene);
 
         render.renderImage();
+        //render.printGrid(50);
         render.writeToImage();
     }
 }
