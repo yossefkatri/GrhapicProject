@@ -6,10 +6,7 @@ import geometries.FlatGeometry;
 import geometries.Geometries;
 import geometries.Geometry;
 import geometries.Intersectable;
-import primitives.Color;
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.vector;
+import primitives.*;
 import scene.Scene;
 
 import java.util.*;
@@ -46,21 +43,19 @@ public class Render {
         Iterator<LightSource> lights=scene.getLightsIterator();
         Color diffuseLight=new Color(0,0,0);
         Color specularLight=new Color(0,0,0);
+        double Kd=geometry.getMaterial().getKd();
+        double Ks=geometry.getMaterial().getKs();
+        vector n=geometry.getNormal(point).normalize();
+        vector MV=new vector(point, scene.
+                getCamera().getP0()).normalize();
         while (lights.hasNext()) {
             LightSource Current = lights.next();
+            vector l=Current.getL(point).normalize();
+            Color c=Current.getInternsity(point);
+            int nShininess=geometry.getnShininess();
             if(!occluded(Current,point,geometry)) {
-                diffuseLight = diffuseLight.add(calcDiffusiveComp(geometry.getMaterial().getKd(),
-                        geometry.getNormal(point),
-                        Current.getL(point),
-                        Current.getInternsity(point)));
-                specularLight = specularLight.add(calcSpecularComp(geometry.getMaterial().getKs(),
-                        new vector(point, scene.
-                                getCamera().getP0()).normalize(),
-                        geometry.getNormal(point).normalize(),
-                        Current.getL(point).normalize(),
-                        geometry.getnShininess(),
-                        Current.getInternsity(point)));
-
+                diffuseLight = diffuseLight.add(calcDiffusiveComp(Kd, n, l,c));
+                specularLight = specularLight.add(calcSpecularComp(Ks, MV,n,l,nShininess,c));
             }
         }
 
@@ -155,7 +150,45 @@ public class Render {
         }
         return false;
     }
+   /* private Color calcSpecularComp(double ks, vector v, vector normal,
+                                   vector l, double shininess, Color lightIntensity) {
 
+        v.normalize();
+        normal.normalize();
+        l.normalize();
+
+        normal.multiply(2 * l.dotProduct(normal));
+        l.add(normal);
+        vector R = new vector(l);
+        R.normalize();
+
+        double k = 0;
+
+        if (v.dotProduct(R) > 0) // prevents glowing at edges
+            k = ks * Math.pow(v.dotProduct(R), shininess);
+
+        return new Color((int) (lightIntensity.getColor().getRed() * k),
+                (int) (lightIntensity.getColor().getGreen() * k),
+                (int) (lightIntensity.getColor().getBlue() * k));
+    }*/
+    /*private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
+        minusVector.normalize();
+        vector n=new vector(normal.normalize());
+        l.normalize();
+        vector R=new vector(l).substract(new vector(normal).multiply(2*normal.dotProduct(l))).normalize();
+        double dot= (Util.isOne(minusVector.dotProduct(R))?1:minusVector.dotProduct(R));
+        double k=0;
+        if (nShininess == 0)
+            dot = 1;
+        for (int i = 1; i < nShininess; i++) {
+            dot =(double) dot * dot;
+        }//pow by nShininess
+
+        k=max(0,ks*dot);
+        Color Spec=new Color(scaleColor( internsity,k));
+
+        return Spec;
+    }*/
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
         minusVector.normalize();
         vector n=new vector(normal.normalize());
@@ -168,11 +201,10 @@ public class Render {
 
         return Spec;
     }
-
     private Color calcDiffusiveComp(double kd, vector normal, vector l, Color internsity) {
      double dotProduct=normal.dotProduct(l);
-
-     Color Diff=new Color(scaleColor(internsity,kd*dotProduct));
+     Color Diff;
+     Diff=new Color(scaleColor(internsity,kd*dotProduct));
      return Diff;
     }
     public Color scaleColor(Color c, double factor) {
@@ -234,5 +266,12 @@ public class Render {
     }
     public void writeToImage() {
         imageWriter.writeToimage();
+    }
+    public Color add(Color a,Color b)
+    {
+        Color re=new Color();
+        re.setColor(Math.min(a.getColor().getRed()+a.getColor().getRed(),255),Math.min(a.getColor().getGreen()+a.getColor().getGreen(),255),Math.min(a.getColor().getBlue()+a.getColor().getBlue(),255));
+        return re;
+
     }
 }

@@ -261,7 +261,7 @@ public class RenderTest {
 				new vector(2, 2, -3),0.1, 0.00001, 0.000005));
 
 
-		ImageWriter imageWriter = new ImageWriter("Spot test with shadow2", 500, 500, 500, 500);
+		ImageWriter imageWriter = new ImageWriter("Spot test with shadow6", 500, 500, 500, 500);
 
 		Render render = new Render(imageWriter, scene);
 		render.renderImage();
@@ -319,10 +319,11 @@ public class RenderTest {
 		scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(200, 200, -100)
 				,new vector(new Point3D(-2, -2, -3)), 0, 0.000001, 0.0000005 ));
 
-		ImageWriter imageWriter = new ImageWriter("Spot test with shadow4", 500, 500, 500, 500);
+		ImageWriter imageWriter = new ImageWriter("Spot test with shadow5", 500, 500, 500, 500);
 
 		Render render = new Render(imageWriter, scene);
 		render.renderImage();
+		render.printGrid(50);
 		render.writeToImage();
 	}
 	@Test
