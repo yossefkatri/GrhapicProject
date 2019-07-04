@@ -62,7 +62,7 @@ public class vector {
 
         v.normalize();
 
-        return v.multiply(u.dotProduct(v));
+        return v.multiply(u.dotProduct(v)/(v.length()*v.length()));
     }//projection this on other
     public vector add(vector other) {
         this.head= new vector(head.add(other)).head;
