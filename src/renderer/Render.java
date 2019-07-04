@@ -194,9 +194,9 @@ public class Render {
         vector n=new vector(normal.normalize());
         l.normalize();
         vector R=new vector(l).substract(new vector(normal).multiply(2*normal.dotProduct(l)));
-        double dot=minusVector.dotProduct(R);
-
-        double k=max(0,ks*pow(dot,nShininess));
+        double dot=(minusVector.dotProduct(R));
+        double dotPow=pow(dot,nShininess);
+        double k=max(0,ks*dotPow);
         Color Spec=new Color(scaleColor( internsity,k));
 
         return Spec;

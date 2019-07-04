@@ -268,65 +268,6 @@ public class RenderTest {
 		render.writeToImage();
 	}
 	@Test
-	public void OccludedLightTest4() {
-		Scene scene = new Scene("spotLightTest");
-
-		Triangle triangle = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
-				new Point3D( 3500, -3500, -1000),
-				new Point3D(  3500, 3500, -2000));
-
-		Triangle triangle2 = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
-				new Point3D( 3500,  -3500, -1000),
-				new Point3D( -3500, -3500, -1000));
-
-		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
-		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
-		sphere.setEmmission(new Color(0, 0, 100));
-
-		scene.addGeometry(sphere);
-		scene.addGeometry(triangle);
-		scene.addGeometry(triangle2);
-		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.BLACK)));
-		scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(-200, 200, -100)
-				,new vector(new Point3D(2, 0, -3)), 0, 0.000001, 0.0000005 ));
-
-		ImageWriter imageWriter = new ImageWriter("Spot test with shadow3", 500, 500, 500, 500);
-
-		Render render = new Render(imageWriter, scene);
-		render.renderImage();
-		render.writeToImage();
-	}
-	@Test
-	public void OccludedLightTest5() {
-		Scene scene = new Scene("spotLightTest");
-
-		Triangle triangle = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
-				new Point3D( 3500, -3500, -1000),
-				new Point3D(  3500, 3500, -2000));
-
-		Triangle triangle2 = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
-				new Point3D( 3500,  -3500, -1000),
-				new Point3D( -3500, -3500, -1000));
-
-		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
-		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
-		sphere.setEmmission(new Color(0, 0, 100));
-
-		scene.addGeometry(sphere);
-		scene.addGeometry(triangle);
-		scene.addGeometry(triangle2);
-		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.BLACK)));
-		scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(200, 200, -100)
-				,new vector(new Point3D(-2, -2, -3)), 0, 0.000001, 0.0000005 ));
-
-		ImageWriter imageWriter = new ImageWriter("Spot test with shadow5", 500, 500, 500, 500);
-
-		Render render = new Render(imageWriter, scene);
-		render.renderImage();
-		render.printGrid(50);
-		render.writeToImage();
-	}
-	@Test
 	public void CylinderTest(){
 		Scene scene=new Scene("CylinderTest");
 
