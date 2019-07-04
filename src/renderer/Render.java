@@ -150,45 +150,6 @@ public class Render {
         }
         return false;
     }
-   /* private Color calcSpecularComp(double ks, vector v, vector normal,
-                                   vector l, double shininess, Color lightIntensity) {
-
-        v.normalize();
-        normal.normalize();
-        l.normalize();
-
-        normal.multiply(2 * l.dotProduct(normal));
-        l.add(normal);
-        vector R = new vector(l);
-        R.normalize();
-
-        double k = 0;
-
-        if (v.dotProduct(R) > 0) // prevents glowing at edges
-            k = ks * Math.pow(v.dotProduct(R), shininess);
-
-        return new Color((int) (lightIntensity.getColor().getRed() * k),
-                (int) (lightIntensity.getColor().getGreen() * k),
-                (int) (lightIntensity.getColor().getBlue() * k));
-    }*/
-    /*private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
-        minusVector.normalize();
-        vector n=new vector(normal.normalize());
-        l.normalize();
-        vector R=new vector(l).substract(new vector(normal).multiply(2*normal.dotProduct(l))).normalize();
-        double dot= (Util.isOne(minusVector.dotProduct(R))?1:minusVector.dotProduct(R));
-        double k=0;
-        if (nShininess == 0)
-            dot = 1;
-        for (int i = 1; i < nShininess; i++) {
-            dot =(double) dot * dot;
-        }//pow by nShininess
-
-        k=max(0,ks*dot);
-        Color Spec=new Color(scaleColor( internsity,k));
-
-        return Spec;
-    }*/
     private Color calcSpecularComp(double ks, vector minusVector, vector normal, vector l, int nShininess, Color internsity) {
         minusVector.normalize();
         vector n=new vector(normal.normalize());
@@ -234,7 +195,7 @@ public class Render {
         for(int i=0;i<imageWriter.getWidth();i++)
             for(int j=0;j<imageWriter.getHeight();j++)
             {
-                Ray ray=scene.getCamera().constructRayThroughPixel(imageWriter.getNx(),imageWriter.getNy(),i,j,scene.getScreenDistance(),imageWriter.getWidth(),imageWriter.getWidth());
+                Ray ray=scene.getCamera().constructRayThroughPixel(imageWriter.getNx(),imageWriter.getNy(),i,j,scene.getScreenDistance(),imageWriter.getWidth(),imageWriter.getHeight());
                 Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(ray);
                 if(intersectionPoints.isEmpty())
                     imageWriter.writePixel(i,j,scene.getBackground().getColor());
@@ -245,6 +206,27 @@ public class Render {
                         imageWriter.writePixel(i, j, calcColor(point.getKey(),point.getValue() ,ray).getColor());
                     }
                 }
+            }
+    }
+    public void renderImageWithSupersampling() {
+        for(int i=0;i<imageWriter.getWidth();i++)
+            for(int j=0;j<imageWriter.getHeight();j++)
+            {
+                List<Ray> rays=scene.getCamera().constructRaysThroughPixel(imageWriter.getNx(),imageWriter.getNy(),i,j,scene.getScreenDistance(),imageWriter.getWidth(),imageWriter.getWidth());
+                List<Color> colorsRays=new ArrayList<Color>();
+                for (Ray ray: rays)
+                {
+                    Map<Geometry, List<Point3D>> intersectionPoints = getSceneRayIntersections(ray);
+                    if (intersectionPoints.isEmpty())
+                        colorsRays.add(new Color(scene.getBackground().getColor()));
+                    else {
+                        Map<Geometry, Point3D> closestPoint = getClosestPoint(intersectionPoints);
+                        for (Map.Entry<Geometry, Point3D> point : closestPoint.entrySet()) {
+                            colorsRays.add(new Color(calcColor(point.getKey(), point.getValue(), ray)));
+                        }
+                    }
+                }
+                imageWriter.writePixel(i, j,Average(colorsRays).getColor());
             }
     }
     public void printGrid(int interval) {
@@ -267,11 +249,19 @@ public class Render {
     public void writeToImage() {
         imageWriter.writeToimage();
     }
-    public Color add(Color a,Color b)
-    {
-        Color re=new Color();
-        re.setColor(Math.min(a.getColor().getRed()+a.getColor().getRed(),255),Math.min(a.getColor().getGreen()+a.getColor().getGreen(),255),Math.min(a.getColor().getBlue()+a.getColor().getBlue(),255));
-        return re;
-
+    public Color Average(List<Color> colors) {
+        double Red=0, Green=0, Blue=0;
+        if(colors.size()==0)
+            return new Color();
+        for (Color color:colors) {
+            Red+=color.getColor().getRed();
+            Green+=color.getColor().getGreen();
+            Blue+=color.getColor().getBlue();
+        }
+        int size=colors.size();
+        Red/=size;
+        Green/=size;
+        Blue/=size;
+        return new Color(Red,Green,Blue);
     }
 }

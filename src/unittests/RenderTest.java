@@ -286,8 +286,7 @@ public class RenderTest {
 		render.writeToImage();
 	}
 	@Test
-	public void TubeTest()
-	{
+	public void TubeTest(){
 		Scene scene=new Scene("CylinderTest");
 
 		Tube tube=new Tube(300,new Ray(new Point3D(0,0,-500),new vector(new Point3D(700,0,0),new Point3D(0,0,-500))));
@@ -302,6 +301,103 @@ public class RenderTest {
 
 		Render render = new Render(imageWriter, scene);
 		render.renderImage();
+		render.writeToImage();
+	}
+	@Test
+	public void SuperSamplingTest1() {
+		Scene scene = new Scene("spotLightTest3");
+		scene.setBackground(new Color(0, 0, 0));
+		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.01));
+		scene.setCameraAndDistance(new Camera(), 200);
+
+		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
+		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
+		sphere.setEmmission(new Color(0, 0, 100));
+		scene.addGeometry(sphere);
+
+		Triangle triangle = new Triangle(
+				new Point3D(-150, -200, -260),
+				new Point3D(-200, -150, -260),
+				new Point3D(-200, -200, -270));
+
+		triangle.setEmmission(new Color(0, 0, 100));
+		triangle.setMaterial(new Material(1, 1, 0, 0, 4));
+		scene.addGeometry(triangle);
+
+		scene.addLight(new spotLight(
+				new Color(255, 100, 100), new Point3D(-200, -200, -150),
+				new vector(2, 2, -3),0.1, 0.00001, 0.000005));
+
+
+		ImageWriter imageWriter = new ImageWriter("Spot test with shadowSS", 500, 500, 500, 500);
+
+		Render render = new Render(imageWriter, scene);
+		render.renderImageWithSupersampling();
+		//render.printGrid(50);
+		render.writeToImage();
+	}
+	@Test
+	public void SuperSamplingTest2() {
+		Scene scene = new Scene("occludedTest");
+		scene.setBackground(new Color(0, 0, 0));
+		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
+		scene.setCameraAndDistance(new Camera(), 200);
+
+		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
+		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
+		sphere.setEmmission(new Color(0, 0, 100));
+		scene.addGeometry(sphere);
+
+		Triangle triangle = new Triangle(
+				new Point3D(-115, -215, -250),
+				new Point3D(-215, -105, -250),
+				new Point3D(-205, -205, -260));
+
+		triangle.setEmmission(new Color(0, 0, 100));
+		triangle.setMaterial(new Material(0.3, 2, 0, 0, 4));
+		scene.addGeometry(triangle);
+
+		scene.addLight(new spotLight(
+				new Color(255, 100, 100), new Point3D(-200, -200, -150),
+				new vector(2, 2, -3),0.1, 0.00001, 0.000005));
+
+
+		ImageWriter imageWriter = new ImageWriter("occluded Test Change PositionWithSS", 500, 500, 500, 500);
+
+		Render render = new Render(imageWriter, scene);
+		render.renderImageWithSupersampling();
+		render.writeToImage();
+	}
+	@Test
+	public void SuperSamplingTest3() {
+		Scene scene = new Scene("occludedTest");
+		scene.setBackground(new Color(0, 0, 0));
+		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
+		scene.setCameraAndDistance(new Camera(), 200);
+
+		Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
+		sphere.setMaterial(new Material(1, 1, 0, 0, 20));
+		sphere.setEmmission(new Color(0, 0, 100));
+		scene.addGeometry(sphere);
+
+		Triangle triangle = new Triangle(
+				new Point3D(-125, -225, -260),
+				new Point3D(-225, -125, -260),
+				new Point3D(-225, -225, -270));
+
+		triangle.setEmmission(new Color(0, 0, 100));
+		triangle.setMaterial(new Material(0.3, 2, 0, 0, 4));
+		scene.addGeometry(triangle);
+
+		scene.addLight(new spotLight(
+				new Color(255, 100, 100), new Point3D(-199.49, -196.23, -196.79),
+				new vector(2, 2, -3),0.1, 0.00001, 0.000005));
+
+
+		ImageWriter imageWriter = new ImageWriter("occluded Test Change Light withSuperSampling", 500, 500, 500, 500);
+
+		Render render = new Render(imageWriter, scene);
+		render.renderImageWithSupersampling();
 		render.writeToImage();
 	}
 }

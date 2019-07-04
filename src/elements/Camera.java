@@ -4,6 +4,9 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Camera {
     private Point3D P0;
     private vector vUp;
@@ -43,15 +46,30 @@ public class Camera {
         vRight = (vUp.crossproduct(vTo)).normalize();
     }
     /************** Operations ***************/
-    public Ray constructRayThroughPixel(int Nx ,int Ny,int i,int j,double screenDistance,double screenWidth,double screenHeight) {
+    public Ray constructRayThroughPixel(int Nx ,int Ny,double i,double j,double screenDistance,double screenWidth,double screenHeight) {
         Point3D Pc=getP0().add(new vector(vTo).multiply(screenDistance));//pc=p0+d*vTo
         double Rx=screenWidth/Nx;
         double Ry=screenHeight/Ny;
-        double yj=(j-Ny/2)*Ry-Ry/2;
-        double xi=(i-Nx/2)*Rx-Rx/2;
+        double yj=(j-Ny/2.0)*Ry-Ry/2.0;
+        double xi=(i-Nx/2.0)*Rx-Rx/2.0;
         Point3D Pij= Pc.add(new vector(vRight).multiply(xi).substract(new vector(vUp).multiply(yj)));//Pij=pc+(xi*vRight-yj*vUp)
         vector Vij=new vector(getP0(),Pij);
         Vij.normalize();
         return new Ray(getP0(),Vij);
+    }
+
+    public List<Ray> constructRaysThroughPixel(int Nx ,int Ny,int i,int j,double screenDistance,double screenWidth,double screenHeight) {
+        List<Ray> rays=new ArrayList<Ray>();
+        Ray center=constructRayThroughPixel(Nx,Ny,i,j,screenDistance,screenWidth,screenHeight);
+        Ray Right=constructRayThroughPixel(Nx,Ny,i+0.4,j,screenDistance,screenWidth,screenHeight);
+        Ray Left=constructRayThroughPixel(Nx,Ny,i-0.4,j,screenDistance,screenWidth,screenHeight);
+        Ray Up=constructRayThroughPixel(Nx,Ny,i,j+0.4,screenDistance,screenWidth,screenHeight);
+        Ray Down=constructRayThroughPixel(Nx,Ny,i,j-0.4,screenDistance,screenWidth,screenHeight);
+        rays.add(center);
+        rays.add(Right);
+        rays.add(Left);
+        rays.add(Up);
+        rays.add(Down);
+        return rays;
     }
 }

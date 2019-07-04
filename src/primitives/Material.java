@@ -17,6 +17,8 @@ public class Material {
     public Material() {
         Kd = 1.0;
         Ks = 1.0;
+        Kr=0.0;
+        Kt=0.0;
         nShininess=4;
 
     }
