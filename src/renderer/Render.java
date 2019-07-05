@@ -207,6 +207,7 @@ public class Render {
         }
         return false;
     }
+
     private double ImprovingOccluded(LightSource light, Point3D point, Geometry geometry) {
         vector lightDirection=light.getL(point).normalize();
         lightDirection.multiply(-1);
