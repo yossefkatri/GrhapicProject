@@ -207,31 +207,6 @@ public class Render {
         }
         return false;
     }
-    /*private double ImprovingSoftShadows(LightSource light, Point3D point, Geometry geometry)
-    {
-        vector lightDirection=light.getL(point).normalize();
-        lightDirection.multiply(-1);
-
-        Point3D geometryPoint=new Point3D(point);
-
-        vector epsVector = new vector(geometry.getNormal(geometryPoint)).normalize();
-        epsVector.multiply((epsVector.dotProduct(lightDirection) > 0) ? 2 : -2);
-
-        geometryPoint = point.add(epsVector);
-
-        Ray lightRay =new Ray(geometryPoint,lightDirection);
-
-        Map<Geometry,List<Point3D>> intersectionPoints=getSceneRayIntersections(lightRay);
-
-        if(geometry instanceof FlatGeometry) {
-            intersectionPoints.remove(geometry);
-        }
-        for (Map.Entry<Geometry,List<Point3D>> entry: intersectionPoints.entrySet()){
-            if(entry.getKey().getMaterial().getKt()==0)
-                return true;
-        }
-        return false;
-    }*/
     private double ImprovingOccluded(LightSource light, Point3D point, Geometry geometry) {
         vector lightDirection=light.getL(point).normalize();
         lightDirection.multiply(-1);
