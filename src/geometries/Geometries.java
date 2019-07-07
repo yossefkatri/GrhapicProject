@@ -18,15 +18,15 @@ public class Geometries{
     /************** Operations ***************/
     public void add(Intersectable geometry)
     {
-        geometries.add(geometry);
+        geometries.add(geometry);//add the geometry to the list
     }
     public Map<Geometry,List<Point3D>> findIntersections(Ray ray){
         Map<Geometry,List<Point3D>> Intersections=new HashMap<Geometry,List<Point3D>>();
         for (Intersectable geometry: geometries) {
-            if(geometry.findIntersections(ray)!=Intersectable.EMPTY_LIST && !geometry.findIntersections(ray).isEmpty())
-            Intersections.put((Geometry)geometry,geometry.findIntersections(ray));
+            if(geometry.findIntersections(ray)!=Intersectable.EMPTY_LIST && !geometry.findIntersections(ray).isEmpty())//if there are intersections with the geometry
+            Intersections.put((Geometry)geometry,geometry.findIntersections(ray));//put the geometry and the intersections in the Map
         }
 
-        return Intersections;
+        return Intersections;//return the intersections
     }
 }

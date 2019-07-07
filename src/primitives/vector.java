@@ -59,10 +59,10 @@ public class vector {
     public vector proj(vector other){
         vector u=new vector(this);
         vector v=new vector(other);
-
+        
         v.normalize();
-
-        return v.multiply(u.dotProduct(v)/(v.length()*v.length()));
+        double temp=u.dotProduct(v);
+        return v.multiply(temp);
     }//projection this on other
     public vector add(vector other) {
         this.head= new vector(head.add(other)).head;

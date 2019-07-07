@@ -287,7 +287,7 @@ public class RenderTest {
 	}
 	@Test
 	public void TubeTest(){
-		Scene scene=new Scene("CylinderTest");
+		Scene scene=new Scene("TubeTest");
 
 		Tube tube=new Tube(300,new Ray(new Point3D(0,0,-500),new vector(new Point3D(700,0,0),new Point3D(0,0,-500))));
 		tube.setEmmission(new Color(40, 29, 28));

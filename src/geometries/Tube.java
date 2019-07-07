@@ -63,7 +63,6 @@ public class Tube extends RadialGeometry {
        Point3D p=new Point3D(ray.getP00());
        Point3D p0=new Point3D(this.getRay().getP00());
         vector deltaP=new vector(p0,p);
-        deltaP.normalize();
 
         vector temp=v.substract(v.proj(v0));
         vector temp1=deltaP.substract(deltaP.proj(v0));

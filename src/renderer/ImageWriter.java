@@ -30,6 +30,10 @@ public class ImageWriter {
 		_image = new BufferedImage(_nX, _nY, BufferedImage.TYPE_INT_RGB);
 	}
 
+	/**
+	 * copy constructor
+	 * @param imageWriter the object that we need to copy.
+	 */
 	public ImageWriter (ImageWriter imageWriter) {
 		this(	imageWriter._imageName,
 				imageWriter._imageWidth, imageWriter._imageHeight,
@@ -49,6 +53,10 @@ public class ImageWriter {
 
 	// ***************** Operations ******************** //
 
+
+	/**
+	 *make the picture itself.
+	 */
 	public void writeToimage(){
 		File ouFile = new File(PROJECT_PATH + "/" + _imageName + ".jpg");
 		try {
@@ -64,6 +72,12 @@ public class ImageWriter {
 		}
 	}
 
+	/**
+	 *write the pixel color
+	 * @param xIndex the x part of the pixel.
+	 * @param yIndex the y part of th pixel.
+	 * @param color the color itself.
+	 */
 	public void writePixel(int xIndex, int yIndex, Color color){
 		_image.setRGB(xIndex, yIndex, color.getRGB());
 	}
