@@ -41,10 +41,6 @@ public class Render {
 
         Color emissionLight=geometry.getEmmission();//get the emmision light.
 
-        Color I0=new Color(ambientLight.getColor().getRed()+emissionLight.getColor().getRed()
-                          ,ambientLight.getColor().getGreen()+emissionLight.getColor().getGreen()
-                           ,ambientLight.getColor().getBlue()+emissionLight.getColor().getBlue());//caculate the sum of them.
-
         Iterator<LightSource> lights=scene.getLightsIterator();//get the iterator to pass on the light source list.
         Color diffuseLight=new Color(0,0,0);
         Color specularLight=new Color(0,0,0);
@@ -66,11 +62,6 @@ public class Render {
 
         //Recursive call for a reflected ray
         Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);//construc the reflected ray
-
-        vector epsVector = new vector(geometry.getNormal(point)).normalize();
-        epsVector.multiply(2);
-        reflectedRay.setP00(reflectedRay.getP00().add(epsVector));
-
         Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);//find the closesnt intersection that have to the ray.
         Color reflectedColor;
         if(reflectedEntry==null)//if there is'nt any intersections
@@ -84,10 +75,6 @@ public class Render {
 
         //Recursive call for a refracted ray
         Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);//construc the refracted ray
-
-        epsVector = new vector(geometry.getNormal(point)).normalize();
-        epsVector.multiply((epsVector.dotProduct(refractedRay.getDirection()) > 0) ? 2 : -2);
-        refractedRay.setP00(refractedRay.getP00().add(epsVector));
 
         Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);//find the closesnt intersection that have to the ray.
         Color refractedColor;
@@ -108,10 +95,6 @@ public class Render {
 
         Color emissionLight=geometry.getEmmission();//get the emmision light.
 
-        Color I0=new Color(ambientLight.getColor().getRed()+emissionLight.getColor().getRed()
-                ,ambientLight.getColor().getGreen()+emissionLight.getColor().getGreen()
-                ,ambientLight.getColor().getBlue()+emissionLight.getColor().getBlue());//caculate the sum of them.
-
         Iterator<LightSource> lights=scene.getLightsIterator();//get the iterator to pass on the light source list.
         Color diffuseLight=new Color(0,0,0);
         Color specularLight=new Color(0,0,0);
@@ -131,11 +114,6 @@ public class Render {
 
         //Recursive call for a reflected ray
         Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);//construc the reflected ray
-
-        vector epsVector = new vector(geometry.getNormal(point)).normalize();
-        epsVector.multiply(2);
-        reflectedRay.setP00(reflectedRay.getP00().add(epsVector));
-
         Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);//find the closesnt intersection that have to the ray.
         Color reflectedColor;
         if(reflectedEntry==null)//if there is'nt any intersections
@@ -149,11 +127,6 @@ public class Render {
 
         //Recursive call for a refracted ray
         Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);//construc the refracted ray
-
-        epsVector = new vector(geometry.getNormal(point)).normalize();
-        epsVector.multiply((epsVector.dotProduct(refractedRay.getDirection()) > 0) ? 2 : -2);
-        refractedRay.setP00(refractedRay.getP00().add(epsVector));
-
         Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);//find the closesnt intersection that have to the ray.
         Color refractedColor;
         if(refractedEntry==null)//if there is'nt any intersections
