@@ -102,8 +102,6 @@ public class vector {
         Coordinate z3=new Coordinate(Util.usubtract(Util.uscale(x1, y2), Util.uscale(y1, x2)));
 
         vector result=new vector(new Point3D(x3,y3,z3));
-        if(result.equals(new vector()))
-            throw new IllegalArgumentException("zero vector!!!");
         return result;
     }
     public double length() {

@@ -66,6 +66,11 @@ public class Render {
 
         //Recursive call for a reflected ray
         Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);//construc the reflected ray
+
+        vector epsVector = new vector(geometry.getNormal(point)).normalize();
+        epsVector.multiply(2);
+        reflectedRay.setP00(reflectedRay.getP00().add(epsVector));
+
         Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);//find the closesnt intersection that have to the ray.
         Color reflectedColor;
         if(reflectedEntry==null)//if there is'nt any intersections
@@ -79,6 +84,11 @@ public class Render {
 
         //Recursive call for a refracted ray
         Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);//construc the refracted ray
+
+        epsVector = new vector(geometry.getNormal(point)).normalize();
+        epsVector.multiply((epsVector.dotProduct(refractedRay.getDirection()) > 0) ? 2 : -2);
+        refractedRay.setP00(refractedRay.getP00().add(epsVector));
+
         Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);//find the closesnt intersection that have to the ray.
         Color refractedColor;
         if(refractedEntry==null)//if there is'nt any intersections
@@ -121,6 +131,11 @@ public class Render {
 
         //Recursive call for a reflected ray
         Ray reflectedRay=constructReflectedRay(geometry.getNormal(point),point,inRay);//construc the reflected ray
+
+        vector epsVector = new vector(geometry.getNormal(point)).normalize();
+        epsVector.multiply(2);
+        reflectedRay.setP00(reflectedRay.getP00().add(epsVector));
+
         Map.Entry<Geometry,Point3D> reflectedEntry=findClosesntIntersection(reflectedRay);//find the closesnt intersection that have to the ray.
         Color reflectedColor;
         if(reflectedEntry==null)//if there is'nt any intersections
@@ -134,6 +149,11 @@ public class Render {
 
         //Recursive call for a refracted ray
         Ray refractedRay=constructRefractedRay(geometry.getNormal(point),point,inRay);//construc the refracted ray
+
+        epsVector = new vector(geometry.getNormal(point)).normalize();
+        epsVector.multiply((epsVector.dotProduct(refractedRay.getDirection()) > 0) ? 2 : -2);
+        refractedRay.setP00(refractedRay.getP00().add(epsVector));
+
         Map.Entry<Geometry,Point3D> refractedEntry=findClosesntIntersection(refractedRay);//find the closesnt intersection that have to the ray.
         Color refractedColor;
         if(refractedEntry==null)//if there is'nt any intersections

@@ -46,7 +46,6 @@ public class RenderTest {
 		render.printGrid(50);
 		render.writeToImage();
 	}
-
 	@Test
 	void spotLightTest(){
 		Scene scene = new Scene("spotLightTest");
@@ -73,7 +72,6 @@ public class RenderTest {
 		render.renderImage();
 		render.writeToImage();
 	}
-
 	@Test
 	void pointLightTest(){
 		Scene scene = new Scene("pointLightTest");
@@ -99,7 +97,6 @@ public class RenderTest {
 		render.renderImage();
 		render.writeToImage();
 	}
-
 	@Test
 	public void sphere_spotLightTest(){
 
@@ -119,7 +116,6 @@ public class RenderTest {
 		render.renderImage();
 		render.writeToImage();
 	}
-
 	@Test
 	public void sphere_pointLightTest(){
 
