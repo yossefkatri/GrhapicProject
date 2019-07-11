@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+
 public class Cylinder extends Tube {
+
     protected double length;
     /********** Constructors ***********/
     public Cylinder(double _radius, Ray ray, double length) {
@@ -105,3 +107,4 @@ public class Cylinder extends Tube {
         return Intersections;
     }
 }
+

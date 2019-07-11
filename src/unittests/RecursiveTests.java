@@ -45,12 +45,12 @@ public class RecursiveTests {
         scene.setCameraAndDistance(new Camera(),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(300, new Point3D(-550, -500, -1000));
-        sphere.setMaterial(new Material(1,1,0,0.5,200));
+        sphere.setMaterial(new Material(1,1,0,0.5,20));
         sphere.setEmmission(new Color(0, 0, 100));
         scene.addGeometry(sphere);
 
         Sphere sphere2 = new Sphere(150, new Point3D(-550, -500, -1000));
-        sphere2.setMaterial(new Material(1,1,0,0,200));
+        sphere2.setMaterial(new Material(1,1,0,0,20));
         sphere2.setEmmission(new Color(100, 20, 20));
         scene.addGeometry(sphere2);
 

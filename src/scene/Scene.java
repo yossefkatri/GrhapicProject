@@ -22,7 +22,7 @@ public class Scene {
     public Scene(String sceneName) {
         SceneName = sceneName;
         geometries=new Geometries();
-        ambientLight=new AmbientLight();
+        ambientLight=new AmbientLight(new Color(255,255,255),0.1);
         Background=new Color(java.awt.Color.BLACK);
         camera=new Camera();
         Lights=new ArrayList<LightSource>();
