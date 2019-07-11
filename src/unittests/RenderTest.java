@@ -264,42 +264,6 @@ public class RenderTest {
 		render.writeToImage();
 	}
 	@Test
-	public void CylinderTest(){
-		Scene scene=new Scene("CylinderTest");
-
-		Cylinder cylinder=new Cylinder(300,new Ray(new Point3D(0,0,-500),new vector(new Point3D(700,0,0),new Point3D(0,0,-500))),100);
-		cylinder.setEmmission(new Color(40, 29, 28));
-
-		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.BLACK)));
-		scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(200, 200, -100)
-				,new vector(new Point3D(-2, -2, -3)), 0, 0.000001, 0.0000005 ));
-
-		scene.addGeometry(cylinder);
-		ImageWriter imageWriter = new ImageWriter("CylinderTest", 500, 500, 500, 500);
-
-		Render render = new Render(imageWriter, scene);
-		render.renderImage();
-		render.writeToImage();
-	}
-	@Test
-	public void TubeTest(){
-		Scene scene=new Scene("TubeTest");
-
-		Tube tube=new Tube(300,new Ray(new Point3D(0,0,-500),new vector(new Point3D(700,0,0),new Point3D(0,0,-500))));
-		tube.setEmmission(new Color(40, 29, 28));
-
-		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.BLACK)));
-		scene.addLight(new spotLight(new Color(255, 100, 100), new Point3D(200, 200, -100)
-				,new vector(new Point3D(-2, -2, -3)), 0, 0.000001, 0.0000005 ));
-
-		scene.addGeometry(tube);
-		ImageWriter imageWriter = new ImageWriter("TubeTest", 500, 500, 500, 500);
-
-		Render render = new Render(imageWriter, scene);
-		render.renderImage();
-		render.writeToImage();
-	}
-	@Test
 	public void SuperSamplingTest1() {
 		Scene scene = new Scene("spotLightTest3");
 		scene.setBackground(new Color(0, 0, 0));

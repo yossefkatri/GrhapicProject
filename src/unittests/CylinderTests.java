@@ -5,7 +5,7 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CylinderTests {
+/*class CylinderTests {
     Cylinder cy=new Cylinder(5,new Ray(new Point3D(0,0,0),new vector(0,0,2)),5);
     @Test
     void getNormal() {
@@ -18,4 +18,4 @@ class CylinderTests {
 
     }
 
-}
+}*/

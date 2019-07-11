@@ -13,16 +13,6 @@ class vectorTests {
         vector v2=new vector(new Point3D(0.0,1.0,2.0) );
         v1.add(v2);
         assertEquals("Vector{head=Point3D{x=1.0, y=3.0, z=2.0}}",v1.toString());
-        v2=new vector();
-        try
-        {
-            v2.add(v2);
-            fail("its a zero vector");
-        }
-        catch (Exception ex)
-        {
-            assertTrue(true);
-        }
 
     }
 
@@ -32,16 +22,6 @@ class vectorTests {
         vector v2=new vector(new Point3D(0.0,1.0,2.0) );
         v1.substract(v2);
         assertEquals("Vector{head=Point3D{x=1.0, y=1.0, z=-2.0}}",v1.toString());
-        v2=new vector();
-        try
-        {
-            v2.substract(v2);
-            fail("its a zero vector");
-        }
-        catch (Exception ex)
-        {
-            assertTrue(true);
-        }
     }
 
     @Test
@@ -49,15 +29,6 @@ class vectorTests {
         vector v1=new vector(new Point3D(1.0,2.0,0.0));
         v1.multiply(5);
         assertEquals("Vector{head=Point3D{x=5.0, y=10.0, z=0.0}}",v1.toString());
-        try
-        {
-            v1.multiply(0);
-            fail("its a zero vector");
-        }
-        catch (Exception ex)
-        {
-            assertTrue(true);
-        }
     }
 
     @Test
@@ -92,26 +63,7 @@ class vectorTests {
         vector v3=v1.crossproduct(v2);
         v3.normalize();
         assertEquals("Vector{head=Point3D{x=0.0, y=0.0, z=1.0}}",v3.toString());
-        v1=new vector(new Point3D(1.0,2.0,3.0));
-        v2=new vector(new Point3D(2.0,4.0,6.0));
-        try {
-            v3 = v1.crossproduct(v2);
-            fail("its a zero vector!!");
-        }
-        catch (Exception ex)
-        {
-            assertTrue(true);
-        }
-        v1=new vector(new Point3D(1.0,2.0,3.0));
-        v2=new vector(new Point3D(-1.0,-2.0,-3.0));
-        try {
-            v3 = v1.crossproduct(v2);
-            fail("its a zero vector!!");
-        }
-        catch (Exception ex)
-        {
-            assertTrue(true);
-        }
+
         v1=new vector(new Point3D(2.0,2.0,3.0));
         v2=new vector(new Point3D(-1.0,2.0,-3.0));
         v3=v1.crossproduct(v2);
@@ -135,12 +87,15 @@ class vectorTests {
         vector v = new vector(new Point3D(.5, -5, 10));
         v.normalize();
         assertEquals(1, v.length(), 1e-10);
-        v = new vector();
-        try {
-            v.normalize();
-            fail("Didn't throw divide by zero exception!");
-        } catch (ArithmeticException e) {
-            assertTrue(true);
-        }
+    }
+    @Test
+    void Distance()
+    {
+        Point3D p1=new Point3D(6,7,8);
+        Point3D p2=new Point3D(3,4,5);
+
+        vector v=new vector(p1,p2);
+
+        assertEquals(v.length(),p1.distance(p2));
     }
 }
