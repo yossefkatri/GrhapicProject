@@ -45,8 +45,8 @@ public class Camera {
     public Camera() {
         P0=new Point3D(0,0,0);
         vTo=new vector(0,0,-1);
-        vUp=new vector(1,0,0);
-        vRight=new vector(0,1,0);
+        vUp=new vector(0,-1,0);
+        vRight=new vector(-1,0,0);
     }
     /************** Operations ***************/
     public Ray constructRayThroughPixel(int Nx ,int Ny,double i,double j,double screenDistance,double screenWidth,double screenHeight) {

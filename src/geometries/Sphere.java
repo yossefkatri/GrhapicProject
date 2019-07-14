@@ -70,4 +70,17 @@ public class Sphere extends RadialGeometry {
             Intersections.add(ray.getP00());
         return Intersections;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sphere)) return false;
+        Sphere sphere = (Sphere) o;
+        return Objects.equals(center, sphere.center);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(center);
+    }
 }

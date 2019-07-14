@@ -2,10 +2,8 @@ package renderer;
 
 import elements.Light;
 import elements.LightSource;
-import geometries.FlatGeometry;
-import geometries.Geometries;
-import geometries.Geometry;
-import geometries.Intersectable;
+import elements.SphereLight;
+import geometries.*;
 import primitives.*;
 import scene.Scene;
 
@@ -168,7 +166,10 @@ public class Render {
     private Color calcDiffusiveComp(double kd, vector normal, vector l, Color internsity) {
         normal.normalize();
         l.normalize();
+
         double dotProduct=normal.dotProduct(l);
+        if(dotProduct>0)
+            return new Color(0,0,0);
      Color Diff;
      Diff=new Color(scaleColor(internsity,kd*dotProduct));//caculate the diffuse color
      return Diff;

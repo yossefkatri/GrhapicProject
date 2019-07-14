@@ -18,7 +18,7 @@ public class pointLight extends Light implements LightSource{
     /*************** Admin *****************/
     @Override
     public Color getIntensity() {
-        return null;
+        return this.color;
     }
 
     @Override
