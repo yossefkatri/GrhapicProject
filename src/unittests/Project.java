@@ -32,8 +32,8 @@ public class Project {
         Sphere sphere3=new Sphere(new Color(0, 50, 50),200, new Point3D(-300,-200,-900));
         Sphere sphere4=new Sphere(new Color(114,61,141),150,new Point3D(400,0,-800));
 
-        Sphere sphere5=new Sphere(new Color(0,0,100),50,new Point3D(-800,-600,-400));
-        Sphere sphere6=new Sphere(new Color(100,0,0),50,new Point3D(800,-600,-400));
+        Sphere sphere5=new Sphere(new Color(0,0,100),100,new Point3D(-500,-600,-400));
+        Sphere sphere6=new Sphere(new Color(100,0,0),100,new Point3D(500,-600,-400));
 
         triangle1.setMaterial(new Material(1,1,0,1.0,5));
         triangle2.setMaterial(new Material(1,1,0,1.0,5));
@@ -62,12 +62,13 @@ public class Project {
         scene.addGeometry(sphere6);
         //scene.addLight(new pointLight(new Color(50, 50,50), new Point3D(-1000,0,-400)
         //       , 0.01, 0.00001, 0.0000005));
-        pointLight light=new pointLight(new Color(250, 100,100), new Point3D(-800,-600,-400) , 0.01, 0.001, 0.00005);
-        pointLight light1=new pointLight(new Color(250, 100,100), new Point3D(800,-600,-400) , 0.01, 0.001, 0.00005);
+        pointLight light=new pointLight(new Color(250, 100,100), new Point3D(-500,-600,-400) , 0.01, 0.001, 0.00005);
+       pointLight light1=new pointLight(new Color(250, 100,100), new Point3D(500,-600,-400) , 0.01, 0.001, 0.00005);
         //scene.addLight(light);
         scene.addLight(new SphereLight(light,sphere5));
         scene.addLight(new SphereLight(light1,sphere6));
-        scene.addLight(new pointLight(new Color(250,100,100),new Point3D(0,-1000,-600), 0.01, 0.001, 0.00005));
+        scene.addLight(new pointLight(new Color(250,100,100),new Point3D(0,-400,-200), 0.01, 0.001, 0.00005));
+        scene.addLight(new spotLight(new Color(250,255,255),new Point3D(0,0,0),new vector(new Point3D(500,-600,-400)), 0.01, 0.001, 0.0005 ));
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.BLACK)));
         ImageWriter imageWriter = new ImageWriter( "Project", 500, 500, 500, 500);
 

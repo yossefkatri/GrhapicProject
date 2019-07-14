@@ -24,9 +24,9 @@ public class SphereLight extends Light implements LightSource {
 
     @Override
     public Color getInternsity(Point3D point) {
-        if (point.distance(sphere.getCenter()) <= sphere.get_radius()) {
-            return light.getInternsity(point);
-        }
+       // if (point.distance(sphere.getCenter()) <= sphere.get_radius()) {
+       //     return light.getInternsity(point);
+       // }
         return light.getInternsity(point).add(sphere.getEmmission());
     }
 
