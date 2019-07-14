@@ -2,7 +2,6 @@ package geometries;
 
 import primitives.*;
 import primitives.Color;
-import sun.invoke.empty.Empty;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,8 +38,6 @@ public class Cylinder extends RadialGeometry{
     }
     @Override
     public vector getNormal(Point3D p1) {
-
-        if(p1.distance());
         vector C=new vector(ray.getDirection());
         C.normalize();
         vector Tmp=new vector(ray.getP00(),p1);
@@ -60,10 +57,11 @@ public class Cylinder extends RadialGeometry{
         double T1,T2,T3;
         T2=new vector(ray.getP00()).dotProduct(this.ray.getDirection())-new vector(this.ray.getP00()).dotProduct(this.ray.getDirection());
         T1=T2/length;
-        K=(ray.getP00().substract(this.ray.getP00())).substract(this.ray.getDirection().multiply(T1));
+        vector v=new vector(this.ray.getDirection());
+        K=(ray.getP00().substract(this.ray.getP00())).substract(v.multiply(T1));
         T3=ray.getDirection().dotProduct(this.ray.getDirection());
         T1=T3/length;
-        D=ray.getDirection().substract(this.ray.getDirection().multiply(T1));
+        D=new vector(ray.getDirection()).substract(new vector(this.ray.getDirection()).multiply(T1));
         Aq=D.dotProduct(D);
         Bq=2*D.dotProduct(K);
         Cq=K.dotProduct(K)-this.get_radius()*this.get_radius();
@@ -79,10 +77,9 @@ public class Cylinder extends RadialGeometry{
                 if(SecondT< 0.001)
                     return EMPTY_LIST;   //ray missed
                 T1=(T2+SecondT*T3)/length;
-                if(T1>=0&&T1<=0) {
-                    Point3D p1=ray.getP00().add(ray.getDirection().multiply(SecondT));//p1=p0+SecondT*V0
+                if(T1>=0&&T1<=1) {
+                    Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(SecondT));//p1=p0+SecondT*V0
                     intersections.add(p1);
-                    return intersections;
                 }
             }
             else{
@@ -90,16 +87,16 @@ public class Cylinder extends RadialGeometry{
                 if(FirstT<SecondT)
                 {
                     T1=(T2+FirstT*T3)/length;
-                    if(T1>=0&&T1<=0)
+                    if(T1>=0&&T1<=1)
                     {
-                        Point3D p1=ray.getP00().add(ray.getDirection().multiply(FirstT));//p1=p0+FirstT*V0
+                        Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(FirstT));//p1=p0+FirstT*V0
                         intersections.add(p1);
                     }
 
                     T1=(T2+SecondT*T3)/length;
-                    if(T1>=0&&T1<=0)
+                    if(T1>=0&&T1<=1)
                     {
-                        Point3D p1=ray.getP00().add(ray.getDirection().multiply(SecondT));//p1=p0+SecondT*V0
+                        Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(SecondT));//p1=p0+SecondT*V0
                         intersections.add(p1);
                     }
                   //  SmallerT=FirstT;
@@ -108,25 +105,25 @@ public class Cylinder extends RadialGeometry{
                 else if(SecondT<0.001)
                 {
                     T1=(T2+FirstT*T3)/length;
-                    if(T1>=0&&T1<=0)
+                    if(T1>=0&&T1<=1)
                     {
-                        Point3D p1=ray.getP00().add(ray.getDirection().multiply(FirstT));//p1=p0+FirstT*V0
+                        Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(FirstT));//p1=p0+FirstT*V0
                         intersections.add(p1);
                     }
                 }
                 else
                 {
                     T1=(T2+FirstT*T3)/length;
-                    if(T1>=0&&T1<=0)
+                    if(T1>=0&&T1<=1)
                     {
-                        Point3D p1=ray.getP00().add(ray.getDirection().multiply(FirstT));//p1=p0+FirstT*V0
+                        Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(FirstT));//p1=p0+FirstT*V0
                         intersections.add(p1);
                     }
 
                     T1=(T2+SecondT*T3)/length;
-                    if(T1>=0&&T1<=0)
+                    if(T1>=0&&T1<=1)
                     {
-                        Point3D p1=ray.getP00().add(ray.getDirection().multiply(SecondT));//p1=p0+SecondT*V0
+                        Point3D p1=ray.getP00().add(new vector(ray.getDirection()).multiply(SecondT));//p1=p0+SecondT*V0
                         intersections.add(p1);
                     }
                 }
