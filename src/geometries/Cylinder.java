@@ -10,6 +10,7 @@ import java.util.Vector;
 
 
 public class Cylinder extends RadialGeometry{
+    private final static double Zero = 1e-4;
     protected Ray ray;
     protected double length;
     /********** Constructors ***********/
@@ -51,6 +52,65 @@ public class Cylinder extends RadialGeometry{
     @Override
     public List<Point3D> findIntersections(Ray ray)
     {
+        vector origin=new vector(ray.getP00());
+        vector _center=new vector(this.ray.getP00());
+        vector direction=new vector(this.ray.getDirection());
+        double _height=length;
+        var intersectionPoint = origin.substract(_center);
+        origin=new vector(ray.getP00());
+        var isBelongToCylinderBase = false;
+        var ts1 = (_height - origin.gethead().gety().get() + _center.gethead().gety().get()) / direction.gethead().gety().get();
+        var point = intersectionPoint.add(direction.multiply(ts1));
+        direction=new vector(this.ray.getDirection());
+        intersectionPoint = origin.substract(_center);
+        origin=new vector(ray.getP00());
+
+        if (point.gethead().getx().get() * point.gethead().getx().get() + point.gethead().getz().get() * point.gethead().getz().get() - _radius * _radius < Zero)
+            isBelongToCylinderBase = true;
+
+        var ts2 = (-_height - origin.gethead().gety().get() + _center.gethead().gety().get()) / direction.gethead().gety().get();
+        point = intersectionPoint.add(direction.multiply(ts2));
+        direction=new vector(this.ray.getDirection());
+        origin=new vector(ray.getP00());
+
+        if (point.gethead().getx().get() * point.gethead().getx().get() + point.gethead().getz().get() * point.gethead().getz().get() - _radius * _radius < Zero)
+            isBelongToCylinderBase = true;
+
+        var a = direction.gethead().getx().get() * direction.gethead().getx().get() + direction.gethead().getz().get() * direction.gethead().getz().get();
+        var b =
+                (origin.gethead().getx().get() * direction.gethead().getx().get() - direction.gethead().getx().get() * _center.gethead().getx().get() + origin.gethead().getz().get() * direction.gethead().getz().get() - direction.gethead().getz().get() * _center.gethead().getz().get());
+        var c = origin.gethead().getx().get() * origin.gethead().getx().get() + _center.gethead().getx().get() * _center.gethead().getx().get() + origin.gethead().getz().get() * origin.gethead().getz().get() + _center.gethead().getz().get() * _center.gethead().getz().get() -
+                2 * (origin.gethead().getx().get() * _center.gethead().getx().get() + origin.gethead().getz().get() * _center.gethead().getz().get()) - _radius * _radius;
+
+        var discriminant = b * b - a * c;
+
+        if (discriminant < 0.001)
+        {
+            if (isBelongToCylinderBase)
+            {
+                double t = Math.min(ts1, ts2);
+                List<Point3D> intersectionsPoint=new ArrayList<Point3D>();
+                intersectionsPoint.add(ray.getP00().add(new vector(ray.getDirection()).multiply(t)));//p0+t*v
+                return intersectionsPoint;
+            }
+            return EMPTY_LIST;
+        }
+        double t;
+        var t1 = (-b - Math.sqrt(discriminant)) / a;
+        var t2 = (-b + Math.sqrt(discriminant)) / a;
+
+        t = t1;
+        if (t1 < 0.001)
+            t = t2;
+
+        if (!(Math.abs(origin.gethead().gety().get() + t * direction.gethead().gety().get() - _center.gethead().gety().get()) > _height)) return t > Zero;
+        if (!isBelongToCylinderBase) return EMPTY_LIST;
+        t = Math.min(ts1, ts2);
+        List<Point3D> intersectionsPoint=new ArrayList<Point3D>();
+        intersectionsPoint.add(ray.getP00().add(new vector(ray.getDirection()).multiply(t)));//p0+t*v
+        return intersectionsPoint;
+    }
+    /*{
         double Aq,Bq,Cq,Det,FirstT,SecondT,Int1,Int2;
         List<Point3D> intersections=new ArrayList<Point3D>();
         vector K,D;
@@ -131,6 +191,6 @@ public class Cylinder extends RadialGeometry{
             }
         }
         return EMPTY_LIST;
-    }
+    }*/
 }
 
