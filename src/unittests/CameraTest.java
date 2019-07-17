@@ -1,7 +1,7 @@
 package unittests;
 
 import elements.*;
-import geometries.Cylinder;
+
 import org.junit.jupiter.api.Test;
 import primitives.Point3D;
 import primitives.Ray;
@@ -34,6 +34,6 @@ class CameraTest {
     {
         Camera c=new Camera();
         Ray ray=c.constructRayThroughPixel(10,7,1,1,10,5,5);
-        assertEquals("Ray{p00=Point3D{x=0.0, y=0.0, z=0.0}, direction=Vector{head=Point3D{x=0.20463518708865727, y=-0.21486694644309015, z=-0.9549642064137339}}}",ray.toString());
+        assertEquals("Ray{p00=Point3D{x=0.0, y=0.0, z=0.0}, direction=Vector{head=Point3D{x=0.21486694644309015, y=-0.20463518708865727, z=-0.9549642064137339}}}",ray.toString());
     }
 }

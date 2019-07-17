@@ -2,7 +2,6 @@ package unittests;
 import elements.AmbientLight;
 import elements.Camera;
 import elements.spotLight;
-import geometries.Cylinder;
 import geometries.Sphere;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ public class RecursiveTests {
     @Test
     public void recursiveTest(){
         Scene scene = new Scene("recursiveTest");
-        scene.setCameraAndDistance(new Camera(),300);
+        scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(1,0,0),scene.getCamera().getvTo()),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
         sphere.setMaterial(new Material(1, 1, 0, 0.5, 20));
@@ -42,7 +41,7 @@ public class RecursiveTests {
     public void recursiveTest2(){
 
         Scene scene = new Scene("recursiveTest2");
-        scene.setCameraAndDistance(new Camera(),300);
+        scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(1,0,0),scene.getCamera().getvTo()),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(300, new Point3D(-550, -500, -1000));
         sphere.setMaterial(new Material(1,1,0,0.5,20));
@@ -83,7 +82,7 @@ public class RecursiveTests {
     @Test
     public void recursiveTestSS(){
         Scene scene = new Scene("recursiveTest");
-        scene.setCameraAndDistance(new Camera(),300);
+        scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(1,0,0),scene.getCamera().getvTo()),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(500, new Point3D(0.0, 0.0, -1000));
         sphere.setMaterial(new Material(1, 1, 0, 0.5, 20));
@@ -109,7 +108,7 @@ public class RecursiveTests {
     public void recursiveTest2SS(){
 
         Scene scene = new Scene("recursiveTest2");
-        scene.setCameraAndDistance(new Camera(),300);
+        scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(1,0,0),scene.getCamera().getvTo()),300);
         scene.setAmbientLight(new AmbientLight(0.1));
         Sphere sphere = new Sphere(300, new Point3D(-550, -500, -1000));
         sphere.setMaterial(new Material(1,1,0,0.5,200));

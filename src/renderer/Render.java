@@ -168,8 +168,7 @@ public class Render {
         l.normalize();
 
         double dotProduct=normal.dotProduct(l);
-        if(dotProduct>0)
-            return new Color(0,0,0);
+
      Color Diff;
      Diff=new Color(scaleColor(internsity,kd*dotProduct));//caculate the diffuse color
      return Diff;
