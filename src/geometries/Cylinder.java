@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Vector;
 
 
-public class Cylinder extends RadialGeometry{
+/*public class Cylinder extends RadialGeometry{
     private final static double Zero = 1e-4;
     protected Ray ray;
     protected double length;
     /********** Constructors ***********/
-    public Cylinder(double _radius, Ray ray, double length) {
+   /* public Cylinder(double _radius, Ray ray, double length) {
         super(_radius);
         this.ray=ray;
         this.length = length;
@@ -25,12 +25,12 @@ public class Cylinder extends RadialGeometry{
         this.length = length;
     }
     /************** Getters/Setters *******/
-    public double getLength() {
+    /*public double getLength() {
         return length;
     }
     /*************** Admin *****************/
-    @Override
-    public String toString() {
+    /*@Override
+    /*public String toString() {
         return "Cylinder{" +
                 "ray=" + ray +
                 ", length=" + length +
@@ -51,7 +51,7 @@ public class Cylinder extends RadialGeometry{
 
     @Override
     public List<Point3D> findIntersections(Ray ray)
-    {
+    /*{
         vector origin=new vector(ray.getP00());
         vector _center=new vector(this.ray.getP00());
         vector direction=new vector(this.ray.getDirection());
@@ -103,13 +103,25 @@ public class Cylinder extends RadialGeometry{
         if (t1 < 0.001)
             t = t2;
 
-        if (!(Math.abs(origin.gethead().gety().get() + t * direction.gethead().gety().get() - _center.gethead().gety().get()) > _height)) return t > Zero;
+        if (!(Math.abs(origin.gethead().gety().get() + t * direction.gethead().gety().get() - _center.gethead().gety().get()) > _height))
+        {
+            if(t>Zero)
+            {
+                List<Point3D> intersectionsPoint=new ArrayList<Point3D>();
+                intersectionsPoint.add(ray.getP00().add(new vector(ray.getDirection()).multiply(t)));//p0+t*v
+                return intersectionsPoint;
+            }
+            else
+            {
+               return EMPTY_LIST;
+            }
+        }
         if (!isBelongToCylinderBase) return EMPTY_LIST;
         t = Math.min(ts1, ts2);
         List<Point3D> intersectionsPoint=new ArrayList<Point3D>();
         intersectionsPoint.add(ray.getP00().add(new vector(ray.getDirection()).multiply(t)));//p0+t*v
         return intersectionsPoint;
-    }
+    }*/
     /*{
         double Aq,Bq,Cq,Det,FirstT,SecondT,Int1,Int2;
         List<Point3D> intersections=new ArrayList<Point3D>();
@@ -191,6 +203,5 @@ public class Cylinder extends RadialGeometry{
             }
         }
         return EMPTY_LIST;
-    }*/
-}
-
+    }
+}*/

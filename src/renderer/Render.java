@@ -2,7 +2,7 @@ package renderer;
 
 import elements.Light;
 import elements.LightSource;
-import elements.SphereLight;
+
 import geometries.*;
 import primitives.*;
 import scene.Scene;
@@ -144,30 +144,6 @@ public class Render {
 
         if(geometry instanceof FlatGeometry) {//flat geometry can't interection wuth itself.
             intersectionPoints.remove(geometry);
-        }
-        if(light instanceof SphereLight) {
-            intersectionPoints.remove(((SphereLight) light).getSphere());
-
-           if(!intersectionPoints.isEmpty()){
-                List<Geometry> temp= new ArrayList<Geometry>(intersectionPoints.keySet());
-                for (Geometry key:temp) {
-                    if(!intersectionPoints.get(key).isEmpty())
-                    {
-                        List<Point3D> temp1=intersectionPoints.get(key);
-                        for (int i=0;i<temp1.size();i++)
-                        {
-                            Point3D point1=temp1.get(i);
-                            if(point1.distance(lightRay.getP00())>((SphereLight) light).getLight().getPosition().distance(lightRay.getP00()))
-                            {
-                                temp1.remove(i);
-                            }
-                        }
-                        intersectionPoints.put(key,temp1);
-
-                    }
-
-                }
-            }
         }
         for (Map.Entry<Geometry,List<Point3D>> entry: intersectionPoints.entrySet()){
             if(entry.getKey().getMaterial().getKt()==0)//if there is geometry that doesn't clear so this point.

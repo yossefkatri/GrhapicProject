@@ -57,9 +57,9 @@ public class Main {
             p3.setx(new Coordinate(5.5));
             r1.setP00(p3);
             System.out.println("r1 after change in the point:" + r1.toString());
-            System.out.println("--------------------cylinder-----------------");
-            Cylinder cy1 = new Cylinder(6, r2, 45);
-            System.out.println(cy1.toString());
+            //System.out.println("--------------------cylinder-----------------");
+           // Cylinder cy1 = new Cylinder(6, r2, 45);
+           // System.out.println(cy1.toString());
             System.out.println("--------------------plane-----------------");
             Plane pl1 = new Plane(p4, v2);
             System.out.println(pl1.toString());
@@ -70,9 +70,9 @@ public class Main {
             Point3D p5 = new Point3D(new Coordinate(5.8), new Coordinate(8.8), new Coordinate(5.6));
             Triangle tr1 = new Triangle(p3, p4, p5);
             System.out.println(tr1.toString());
-            System.out.println("--------------------Tube-----------------");
-            Tube tu1 = new Tube(4.7, r1);
-            System.out.println(tu1.toString());
+          //  System.out.println("--------------------Tube-----------------");
+          //  Tube tu1 = new Tube(4.7, r1);
+          //  System.out.println(tu1.toString());
         }
         catch (Exception ex)
         {
