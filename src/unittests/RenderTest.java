@@ -49,8 +49,8 @@ public class RenderTest {
 	@Test
 	void spotLightTest(){
 		Scene scene = new Scene("spotLightTest");
-
-        Triangle triangle = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
+		scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(0,1,0),scene.getCamera().getvTo()),100);
+		Triangle triangle = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
                 new Point3D( 3500, -3500, -1000),
                 new Point3D(  3500, 3500, -2000));
 
@@ -75,7 +75,7 @@ public class RenderTest {
 	@Test
 	void pointLightTest(){
 		Scene scene = new Scene("pointLightTest");
-
+		scene.setCameraAndDistance(new Camera(scene.getCamera().getP0(),new vector(0,1,0),scene.getCamera().getvTo()),100);
 		Triangle triangle = new Triangle(new Color(40, 29, 28),new Point3D(  -3500,  3500, -2000),
 				new Point3D(  3500, 3500, -2000),new Point3D( 3500, -3500, -1000)
 				);
