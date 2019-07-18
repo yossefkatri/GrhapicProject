@@ -13,12 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlaneTests {
 Plane plane=new Plane(new Point3D(3,0,0),new vector(1,0,0));
     @Test
+    /**
+     * test the getnormal function in plane class
+     */
     void getNormal() {
         vector result=plane.getNormal(null);
         assertEquals("Vector{head=Point3D{x=1.0, y=0.0, z=0.0}}",result.toString());
     }
     @Test
-    void findInterctions1(){
+    /**
+     * test the findIntersections function in plane class
+     */
+    void findIntersections1(){
         Plane p=new Plane(new Point3D(100, 0,0),new vector(-1,0,0));
         vector v=new vector(1,2,0);
         Point3D point3D=new Point3D(0,0,0);
@@ -29,7 +35,10 @@ Plane plane=new Plane(new Point3D(3,0,0),new vector(1,0,0));
     }
 
     @Test
-    void findInterctions2() {
+    /**
+     * test the findIntersections function in plane class
+     */
+    void findIntersections2() {
         Plane p=new Plane(new Point3D(30, 0,0),new Point3D(5,1,1),new Point3D(20,1,0));
         vector v=new vector(1,2,0);
         Point3D point3D=new Point3D(0,0,0);
@@ -41,7 +50,10 @@ Plane plane=new Plane(new Point3D(3,0,0),new vector(1,0,0));
     }
 
     @Test
-    void findInterctions3() {
+    /**
+     * test the findIntersections function in plane class
+     */
+    void findIntersections3() {
         Plane p=new Plane(new Point3D(30, 0,0),new Point3D(5,1,1),new Point3D(100,1,0));
         vector v=new vector(1,2,0);
         Point3D point3D=new Point3D(0,0,0);
