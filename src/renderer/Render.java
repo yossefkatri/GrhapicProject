@@ -284,6 +284,6 @@ public class Render {
         Red/=size;
         Green/=size;
         Blue/=size;//divided by the size of the List.
-        return new Color(Red,Green,Blue);
+        return new Color(Red,Green,Blue);//return the new color
     }
 }

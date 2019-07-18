@@ -27,7 +27,7 @@ public class Scene {
         camera=new Camera();
         Lights=new ArrayList<LightSource>();
         screenDistance=100;
-    }
+    }  // A constructor that initializes the scene with a name and default values ​​in the rest
     public Scene(Scene scene) {
         Background = scene.getBackground();
         ambientLight = scene.getAmbientLight();
